@@ -1,0 +1,101 @@
+# config.yaml
+# Configuration for SHAP Concept Drift Experiments
+
+# --- General Settings ---
+random_seed: 42
+output_dir: "results/" # Base directory for results
+
+# --- Datasets ---
+# List of datasets to run experiments on
+datasets:
+#  - name: "electricity"
+#    file_path: "data/electricity/elecNormNew.csv" # Relative to project root
+#    task_type: "classification" # classification or regression
+#    drift: false
+#    shap_k: 4
+#    initial_train_size: 1000 # Number of initial samples to train model/detectors
+#    retrain_window_size: 1000 # Number of recent samples to use for retraining after drift
+  - name: "weather"
+    file_path_data: "data/weather/NEweather_data.csv"
+    file_path_class: "data/weather/NEweather_class.csv"
+    task_type: "classification"
+    drift: false
+    shap_k: 3
+    initial_train_size: 500 # Number of initial samples to train model/detectors
+    retrain_window_size: 500 # Number of recent samples to use for retraining after drift
+#  - name: "forest"
+#    file_path: "data/forest/forestCoverType.csv"
+#    task_type: "classification"
+#    drift: false
+#    shap_k: 4
+#    initial_train_size: 5000 # Number of initial samples to train model/detectors
+#    retrain_window_size: 5000 # Number of recent samples to use for retraining after drift
+#    shap_subset_size: 500
+
+# --- Models ---
+# List of models to evaluate
+models:
+  - name: "LogisticRegression"
+     # Add any specific model parameters here to override defaults in models.py
+#    params:
+#  - name: "RandomForest"
+#    # if not specified uses DEFAULT_RF_PARAMS in src/models/random_forest.py
+#    params:
+#      n_estimators: 10
+#  - name: "MLP"
+#    params:
+#      hidden_layer_sizes: [ 100 ]
+#      activation: 'relu'
+#      solver: 'adam'
+#      learning_rate: 'constant'
+#      learning_rate_init: 0.001
+
+
+# --- Drift Detectors ---
+# Configuration for each detector type
+detectors:
+  # D3 Configuration
+  d3:
+    enabled: true
+    params:
+      w: 100        # Reference window size
+      rho: 0.2      # Recent window ratio (R = w * rho) -> R=20
+      auc: 0.99   # AUC threshold for drift
+    shap_variant:
+      enabled: true # run SHAP-based D3
+
+  # Dawidd Configuration
+  dawidd:
+    enabled: false
+    params:
+      max_window_size: 200
+      min_window_size: 20
+      alpha: 0.000001 # Significance level for HSIC test
+    shap_variant:
+      enabled: true # run SHAP-based Dawidd
+
+  # HDDDM Configuration
+  hdddm:
+    enabled: false
+    params:
+      gamma: 0.001 # Sensitivity parameter (use gamma OR alpha)
+      alpha: null
+      n_bins: null # Auto-calculate based on initial window
+      hdddm_batch_size: 100
+    shap_variant:
+      enabled: true # run SHAP-based HDDDM
+
+  # Student-Teacher Configuration
+  student_teacher:
+    enabled: false
+    params:
+      student_model_name: "LogisticRegression"
+      adwin_delta: 0.3 # ADWIN confidence parameter
+    shap_variant:
+      enabled: true # run SHAP-based Student-Teacher
+
+# --- SHAP Global Configuration ---
+shap_params:
+  enabled: true # Master switch to enable SHAP variants for configured detectors
+  feature_selection_method: "top_k" # Currently only 'top_k' implementation
+  recalculate_on_retrain: true # Recalculate SHAP and features after drift/retraining
