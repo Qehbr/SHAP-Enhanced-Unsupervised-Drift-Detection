@@ -126,10 +126,12 @@ def select_important_features(shap_values, method='top_k', k=10, feature_names=N
     if method == 'top_k':
         # Ensure k is not larger than the number of features
         k = min(k, len(mean_abs_shap))
-        # indices_of_top_k = np.argpartition(mean_abs_shap, -k)[-k:]
-        # selected_indices = indices_of_top_k[np.argsort(mean_abs_shap[indices_of_top_k])][::-1].tolist()
-        indices_of_bottom_k = np.argpartition(mean_abs_shap, k)[:k]
-        selected_indices = indices_of_bottom_k[np.argsort(mean_abs_shap[indices_of_bottom_k])].tolist()
+        indices_of_top_k = np.argpartition(mean_abs_shap, -k)[-k:]
+        selected_indices = indices_of_top_k[np.argsort(mean_abs_shap[indices_of_top_k])][::-1].tolist()
+
+        # TODO this is feasibility test to check how SEUDD performs with lowest SHAP values
+        # indices_of_bottom_k = np.argpartition(mean_abs_shap, k)[:k]
+        # selected_indices = indices_of_bottom_k[np.argsort(mean_abs_shap[indices_of_bottom_k])].tolist()
         print(f"Selected Top {k} features (indices): {selected_indices}")
     else:
         # TODO - This is for future work with extending SHAP methods

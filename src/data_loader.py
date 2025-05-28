@@ -124,7 +124,7 @@ def load_data_stream(dataset_conf, drift=False, min_drift_point=0.7, max_drift_p
     if name == 'electricity':
         X, y = read_data_electricity_market(dataset_conf['file_path'])
         is_classification = True
-    elif name == 'weather':
+    elif name == 'weather' or name == 'constant' or name == 'prob' or name == 'drift_important' or name == 'drift_unimportant':
         X, y = read_data_weather(dataset_conf['file_path_data'], dataset_conf['file_path_class'])
         is_classification = True
     elif name == 'forest':

@@ -17,26 +17,28 @@ A **model‑agnostic extension framework** for detecting and responding to conce
 ## Repository Layout
 
 ```
-├── src/                       # All source code
-│   ├── data_loader.py         # Dataset readers & stream loader
-│   ├── simulation.py          # Experiment orchestrator
-│   ├── evaluation.py          # Aggregation & plotting helpers
-│   ├── shap_utils.py          # SHAP explainer helpers
-│   ├── utils/                 # Misc utilities (drift injection, etc.)
-│   ├── detectors/             # Drift detector implementations
+├── src/                            # All source code
+│   ├── data_loader.py              # Dataset readers & stream loader
+│   ├── simulation.py               # Experiment orchestrator
+│   ├── evaluation.py               # Aggregation & plotting helpers
+│   ├── shap_utils.py               # SHAP explainer helpers
+│   ├── utils/                      # Misc utilities (drift injection, etc.)
+│   ├── detectors/                  # Drift detector implementations
 │   │   ├── D3/
 │   │   ├── DAWIDD/
 │   │   ├── HDDDM/
 │   │   └── STUDD/
-│   └── models/                # Sklearn‑compatible wrappers
+│   └── models/                     # Sklearn‑compatible wrappers
 │       ├── base_model.py
 │       ├── logistic_regression.py
 │       ├── random_forest.py
 │       └── mlp.py
-├── data/                      # Benchmark datasets
-├── config.yaml                # Single entry‑point configuration file
-├── main.py                    # CLI to run full experiment pipeline
-└── paper/                     # paper source 
+├── data/                           # Benchmark datasets
+├── config.yaml                     # Single entry‑point configuration file
+├── main.py                         # CLI to run full experiment pipeline
+├── generate_assymetric_datasets.py # Generation of assymetric datasets for feasibility test
+├── generate_no_drift_datasets.py   # Generation of probabilistic datasets for feasibility test
+└── paper/                          # paper source 
 ```
 
 ## Code Architecture & Flow
